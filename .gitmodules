@@ -1,0 +1,9 @@
+[submodule "folly/3p/gflags"]
+	path = folly/3p/gflags
+	url = https://github.com/gflags/gflags.git
+[submodule "folly/3p/glog"]
+	path = folly/3p/glog
+	url = https://github.com/google/glog.git
+[submodule "folly/3p/double-conversion"]
+	path = folly/3p/double-conversion
+	url = https://github.com/google/double-conversion.git
