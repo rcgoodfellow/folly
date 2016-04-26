@@ -12,7 +12,7 @@ set(CMAKE_C_COMPILER clang)
 
 set(CMAKE_CXX_FLAGS "-std=c++14 -fcolor-diagnostics")
 
-add_library(follybase
+set(FOLLYBASE_SRC
 	Conv.cpp 
 	Demangle.cpp 
 	detail/RangeCommon.cpp 
@@ -24,6 +24,7 @@ add_library(follybase
 	String.cpp 
 	Unicode.cpp
 )
+
 
 add_executable(generate_fingerprint_tables build/GenerateFingerprintTables.cpp)
 target_link_libraries(generate_fingerprint_tables follybase gflags glog double-conversion)
@@ -41,7 +42,7 @@ execute_process(COMMAND mv ${folly_BINARY_DIR}/EscapeTables.cpp ${folly_SOURCE_D
 execute_process(COMMAND python ${folly_SOURCE_DIR}/build/generate_varint_tables.py)
 execute_process(COMMAND mv ${folly_BINARY_DIR}/GroupVarintTables.cpp ${folly_SOURCE_DIR}/)
 
-add_library(folly
+set(FOLLY_SRC
 	Bits.cpp 
 	Checksum.cpp 
 	detail/CacheLocality.cpp 
@@ -59,6 +60,8 @@ add_library(folly
 	detail/Futex.cpp 
 	detail/StaticSingletonManager.cpp 
 	detail/ThreadLocalDetail.cpp 
+  detail/MallocImpl.cpp
+  detail/FunctionalExcept.cpp
 	GroupVarint.cpp 
 	GroupVarintTables.cpp 
 	IPAddress.cpp 
@@ -134,4 +137,12 @@ add_library(folly
 	experimental/ProgramOptions.cpp 
 	experimental/Select64.cpp 
 	experimental/TestUtil.cpp
+  experimental/io/HugePages.cpp
+)
+
+add_library(folly ${FOLLYBASE_SRC} ${FOLLY_SRC})
+
+install(TARGETS folly 
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib
 )
